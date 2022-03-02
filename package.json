@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "type": "module",
+ 
   "scripts": {
-    "start": "nodemon server"
+    "server": "nodemon server --ignore client",
+    "client": "npm start --prefix client",
+    "start": "concurrently --kill-others-on-fail \"npm run server\" \" npm run client\""
   },
   "repository": {
     "type": "git",
@@ -19,6 +22,7 @@
   },
   "homepage": "https://github.com/theHparth/React_Job#readme",
   "devDependencies": {
+    "concurrently": "^7.0.0",
     "nodemon": "^2.0.15"
   },
   "dependencies": {
