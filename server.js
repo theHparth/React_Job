@@ -1,3 +1,5 @@
+import cors from "cors";
+
 import express from "express";
 const app = express();
 
@@ -15,14 +17,14 @@ import jobsRouter from "./routes/jobRouters.js";
 import notFoundMiddleware from "./middleware/not-found.js";
 import errorHandlerMiddleware from "./middleware/error-handler.js";
 
+app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
   //   throw new Error("error");
-  res.send("Welcome!");
+  res.json({ msg: "Welcome!" });
 });
 
-console.log("1");
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/jobs", jobsRouter);
 
