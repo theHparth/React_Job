@@ -1,5 +1,3 @@
-import cors from "cors";
-
 import express from "express";
 const app = express();
 
@@ -17,7 +15,6 @@ import jobsRouter from "./routes/jobRouters.js";
 import notFoundMiddleware from "./middleware/not-found.js";
 import errorHandlerMiddleware from "./middleware/error-handler.js";
 
-app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
