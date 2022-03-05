@@ -4,7 +4,8 @@ import { useAppContext } from "../context/appContext";
 import Logo from "./Logo";
 import Wrapper from "../asserts/wrappers/Navbar";
 const Navbar = () => {
-  const { toggleSidebar } = useAppContext();
+  const [showLogout, setShowLogout] = useState(false);
+  const { user, logoutUser, toggleSidebar } = useAppContext();
 
   return (
     <Wrapper>
@@ -16,17 +17,17 @@ const Navbar = () => {
           <Logo />
           <h3 className="logo-text">dashboard</h3>
         </div>
+
         <div className="btn-container">
-          <button className="btn" onClick={() => console.log("show logout")}>
+          <button className="btn" onClick={() => setShowLogout(!showLogout)}>
             <FaUserCircle />
-            john
+            {/* {user.name}
+            {user && user.name} */}
+            {user?.name}
             <FaCaretDown />
           </button>
-          <div className="dropdown show-dropdown">
-            <button
-              onClick={() => console.log("logout user")}
-              className="dropdown-btn"
-            >
+          <div className={showLogout ? "dropdown show-dropdown" : "dropdown"}>
+            <button onClick={logoutUser} className="dropdown-btn">
               logout
             </button>
           </div>

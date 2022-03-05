@@ -13,6 +13,7 @@ import {
   SETUP_USER_SUCCESS,
   SETUP_USER_ERROR,
   TOGGLE_SIDEBAR,
+  LOGOUT_USER,
 } from "./actions";
 import axios from "axios";
 
@@ -133,8 +134,14 @@ const AppProvider = ({ children }) => {
     }
     clearAlert();
   };
+
   const toggleSidebar = () => {
     dispatch({ type: TOGGLE_SIDEBAR });
+  };
+
+  const logoutUser = () => {
+    dispatch({ type: LOGOUT_USER });
+    removeUserFromLocalStorage();
   };
 
   return (
@@ -146,6 +153,7 @@ const AppProvider = ({ children }) => {
         loginUser,
         setupUser,
         toggleSidebar,
+        logoutUser,
       }}
     >
       {children}
