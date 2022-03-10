@@ -38,6 +38,42 @@ const AppContext = React.createContext();
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  // this one is not good because hacker can use this to send any api call
+  // axios.defaults.headers.common["Authorization"] = `Bearer ${state.token}`;
+
+  // decleare in global and make new initaial axios call
+  const authFetch = axios.create({
+    baseURL: "/api/v1",
+    headers: {
+      Authorization: `Bearer ${state.token}`,
+    },
+  });
+
+  // if axios ma error ae to handle mate
+  // request interceptor
+  authFetch.interceptors.request.use(
+    (config) => {
+      config.headers.common["Authorization"] = `Bearer ${state.token}`;
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
+  // response interceptor
+  authFetch.interceptors.response.use(
+    (response) => {
+      return response;
+    },
+    (error) => {
+      console.log(error.response);
+      if (error.response.status === 401) {
+        console.log("AUTH ERROR");
+      }
+      return Promise.reject(error);
+    }
+  );
+
   const displayAlert = () => {
     dispatch({
       type: DISPLAY_ALERT,
@@ -144,6 +180,15 @@ const AppProvider = ({ children }) => {
     removeUserFromLocalStorage();
   };
 
+  const updateUser = async (currentUser) => {
+    try {
+      const { data } = await authFetch.patch("/auth/updateUser", currentUser);
+      console.log(data);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -154,6 +199,7 @@ const AppProvider = ({ children }) => {
         setupUser,
         toggleSidebar,
         logoutUser,
+        updateUser,
       }}
     >
       {children}
