@@ -38,3 +38,5 @@ export const GET_JOBS_SUCCESS = "GET_JOBS_SUCCESS";
 
 //to edit job 34
 export const SET_EDIT_JOB = "SET_EDIT_JOB";
+
+export const DELETE_JOB_BEGIN = "DELETE_JOB_BEGIN";
