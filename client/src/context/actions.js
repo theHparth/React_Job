@@ -35,3 +35,6 @@ export const CREATE_JOB_ERROR = "CREATE_JOB_ERROR";
 // to display job 33
 export const GET_JOBS_BEGIN = "GET_JOBS_BEGIN";
 export const GET_JOBS_SUCCESS = "GET_JOBS_SUCCESS";
+
+//to edit job 34
+export const SET_EDIT_JOB = "SET_EDIT_JOB";
