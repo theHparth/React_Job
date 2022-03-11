@@ -3,6 +3,9 @@ import { StatusCodes } from "http-status-codes";
 import { BadRequestError, NotFoundError } from "../errors/index.js";
 import checkPermissions from "../utils/checkPermissions.js";
 
+// stats for
+import mongoose from "mongoose";
+
 const createJob = async (req, res) => {
   const { position, company } = req.body;
   if (!position || !company) {
@@ -61,8 +64,28 @@ const deleteJob = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "Success! Job removed" });
 };
 
+/// 156---38.1 stats
 const showStats = async (req, res) => {
-  res.send("shhow States");
+  let stats = await Job.aggregate([
+    { $match: { createdBy: mongoose.Types.ObjectId(req.user.userId) } },
+    { $group: { _id: "$status", count: { $sum: 1 } } },
+  ]);
+
+  // to count by status 38.3
+  stats = stats.reduce((acc, curr) => {
+    const { _id: title, count } = curr;
+    acc[title] = count;
+    return acc;
+  }, {});
+
+  // if count is 0 ==> 38.4
+  const defaultStats = {
+    pending: stats.pending || 0,
+    interview: stats.interview || 0,
+    declined: stats.declined || 0,
+  };
+  let monthlyApplications = [];
+  res.status(StatusCodes.OK).json({ defaultStats, monthlyApplications });
 };
 
 export { createJob, deleteJob, getAllJobs, updateJob, showStats };
